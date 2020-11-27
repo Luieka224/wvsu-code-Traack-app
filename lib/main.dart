@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,9 +9,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'Nunito'),
+      theme: ThemeData(fontFamily: "Nunito"),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
           child: LoginPage(),
         ),
@@ -28,197 +30,201 @@ class _LoginPageState extends State<LoginPage> {
   int _pageState = 0;
 
   var _backgroundColor = Colors.white;
-  var _headingColor = Color(0xFF26A69A);
+  var _headingColor = Color(0xFF00897B);
+
+  double _headingTop = 100;
 
   double _loginWidth = 0;
+  double _loginHeight = 0;
+  double _loginOpacity = 1;
+
   double _loginYOffset = 0;
   double _loginXOffset = 0;
   double _registerYOffset = 0;
+  double _registerHeight = 0;
+
   double windowWidth = 0;
   double windowHeight = 0;
-  double _loginOpacity = 1;
-  double _headingTop = 150;
-  double _loginHeight = 0;
-  double _registerHeight = 0;
+
+  bool _keyboardVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        setState(() {
+          _keyboardVisible = visible;
+          print("Keyboard State Changed : $visible");
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
+
     _loginHeight = windowHeight - 270;
     _registerHeight = windowHeight - 270;
 
     switch (_pageState) {
       case 0:
         _backgroundColor = Colors.white;
-        _headingColor = Color(0xFF26A69A);
-        _loginXOffset = 0;
-        _loginYOffset = windowHeight;
+        _headingColor = Color(0xFF00897B);
+        _headingTop = 100;
         _loginWidth = windowWidth;
         _loginOpacity = 1;
-        _headingTop = 150;
+        _loginYOffset = windowHeight;
+        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
+        _loginXOffset = 0;
         _registerYOffset = windowHeight;
         break;
       case 1:
-        _backgroundColor = Color(0xFF26A69A);
+        _backgroundColor = Color(0xFF00897B);
         _headingColor = Colors.white;
-        _loginYOffset = 270;
+        _headingTop = 90;
+        _loginWidth = windowWidth;
+        _loginOpacity = 1;
+        _loginYOffset = _keyboardVisible ? 40 : 270;
+        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
         _loginXOffset = 0;
         _registerYOffset = windowHeight;
-        _loginWidth = windowWidth;
-        _headingTop = 120;
-        _loginOpacity = 1;
         break;
       case 2:
-        _backgroundColor = Color(0xFF26A69A);
+        _backgroundColor = Color(0xFF00897B);
         _headingColor = Colors.white;
-        _loginYOffset = 250;
-        _loginXOffset = 20;
-        _registerYOffset = 270;
+        _headingTop = 80;
         _loginWidth = windowWidth - 40;
-        _headingTop = 110;
         _loginOpacity = 0.7;
+        _loginYOffset = _keyboardVisible ? 30 : 240;
+        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 240;
+        _loginXOffset = 20;
+        _registerYOffset = _keyboardVisible ? 55 : 270;
+        _registerHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
         break;
     }
+
     return Stack(
       children: <Widget>[
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              _pageState = 0;
-            });
-          },
-          child: AnimatedContainer(
+        AnimatedContainer(
             curve: Curves.fastLinearToSlowEaseIn,
-            duration: Duration(
-              milliseconds: 800,
-            ),
+            duration: Duration(milliseconds: 800),
             color: _backgroundColor,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _pageState = 0;
+                    });
+                  },
+                  child: Container(
                     child: Column(
                       children: <Widget>[
                         AnimatedContainer(
                           curve: Curves.fastLinearToSlowEaseIn,
-                          duration: Duration(
-                            milliseconds: 800,
-                          ),
+                          duration: Duration(milliseconds: 800),
                           margin: EdgeInsets.only(
                             top: _headingTop,
                           ),
                           child: Text(
-                            'Traack app daw',
-                            style: TextStyle(
-                              color: _headingColor,
-                              fontSize: 28.00,
-                            ),
+                            "Traack",
+                            style:
+                                TextStyle(color: _headingColor, fontSize: 50),
                           ),
                         ),
-                        SizedBox(
-                          height: 15.00,
-                        ),
-                        Text(
-                          'we make life easier thru the innovation technology',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: _headingColor,
-                            fontSize: 16.00,
+                        Container(
+                          margin: EdgeInsets.all(15),
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            'We make life simpler through technology innovation.',
+                            textAlign: TextAlign.center,
+                            style:
+                                TextStyle(color: _headingColor, fontSize: 20),
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 05.00,
-                    ),
-                    child: Center(
-                      child: Image.asset('images/people-mask.png'),
-                    ),
+                ),
+                Container(
+                  child: Center(
+                    child: Image.asset("images/people-mask.png"),
                   ),
-                  Container(
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (_pageState != 0) {
-                              _pageState = 0;
-                            } else {
-                              _pageState = 1;
-                            }
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(50),
-                          padding: EdgeInsets.all(17.00),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: _headingColor,
-                              borderRadius: BorderRadius.circular(30.00)),
-                          child: Center(
-                            child: Text(
-                              'Get Started',
-                              style: TextStyle(
-                                color: Color(0xFFB2EBF2),
-                                fontSize: 20.00,
-                              ),
-                            ),
-                          ),
+                ),
+                Container(
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (_pageState != 0) {
+                          _pageState = 0;
+                        } else {
+                          _pageState = 1;
+                        }
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(32),
+                      padding: EdgeInsets.all(20),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: Color(0xFF00897B),
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Center(
+                        child: Text(
+                          "Get Started",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
+                )
+              ],
+            )),
         AnimatedContainer(
           padding: EdgeInsets.all(32),
           width: _loginWidth,
           height: _loginHeight,
           curve: Curves.fastLinearToSlowEaseIn,
-          duration: Duration(
-            milliseconds: 800,
-          ),
+          duration: Duration(milliseconds: 800),
           transform: Matrix4.translationValues(_loginXOffset, _loginYOffset, 1),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(_loginOpacity),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-            ),
-          ),
+              color: Colors.white.withOpacity(_loginOpacity),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25), topRight: Radius.circular(25))),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Column(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(
-                      bottom: 20,
-                    ),
+                    margin: EdgeInsets.only(bottom: 20),
                     child: Text(
-                      'Login To Continue',
-                      style: TextStyle(
-                        fontSize: 20.00,
-                      ),
+                      "Login To Continue",
+                      style: TextStyle(fontSize: 20),
                     ),
                   ),
-                  InputwithIcon(),
+                  InputWithIcon(
+                    icon: Icons.email,
+                    hint: "Enter Email",
+                  ),
                   SizedBox(
                     height: 20,
                   ),
-                  InputwithIcon(),
+                  InputWithIcon(
+                    icon: Icons.vpn_key,
+                    hint: "Enter Password",
+                  )
                 ],
               ),
               Column(
                 children: <Widget>[
                   PrimaryButton(
-                    btnText: "Log in",
+                    btnText: "Login",
                   ),
                   SizedBox(
                     height: 20,
@@ -229,124 +235,111 @@ class _LoginPageState extends State<LoginPage> {
                         _pageState = 2;
                       });
                     },
-                    child: OutlineButton(
+                    child: OutlineBtn(
                       btnText: "Create New Account",
                     ),
-                  ),
+                  )
                 ],
               ),
             ],
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              _pageState = 1;
-            });
-          },
-          child: AnimatedContainer(
-            height: _registerHeight,
-            padding: EdgeInsets.all(32),
-            curve: Curves.fastLinearToSlowEaseIn,
-            duration: Duration(
-              milliseconds: 800,
-            ),
-            transform: Matrix4.translationValues(0, _registerYOffset, 1),
-            decoration: BoxDecoration(
+        AnimatedContainer(
+          height: _registerHeight,
+          padding: EdgeInsets.all(32),
+          curve: Curves.fastLinearToSlowEaseIn,
+          duration: Duration(milliseconds: 800),
+          transform: Matrix4.translationValues(0, _registerYOffset, 1),
+          decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(25),
-                topRight: Radius.circular(25),
+                  topLeft: Radius.circular(25), topRight: Radius.circular(25))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: Text(
+                      "Create a New Account",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  InputWithIcon(
+                    icon: Icons.email,
+                    hint: "Enter Email",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  InputWithIcon(
+                    icon: Icons.vpn_key,
+                    hint: "Enter Password",
+                  )
+                ],
               ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(
-                        bottom: 20,
-                      ),
-                      child: Text(
-                        'Create a New Account',
-                        style: TextStyle(
-                          fontSize: 20.00,
-                        ),
-                      ),
+              Column(
+                children: <Widget>[
+                  PrimaryButton(
+                    btnText: "Create Account",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _pageState = 1;
+                      });
+                    },
+                    child: OutlineBtn(
+                      btnText: "Back To Login",
                     ),
-                    InputwithIcon(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    InputwithIcon(),
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    PrimaryButton(
-                      btnText: "Create Account",
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _pageState = 1;
-                        });
-                      },
-                      child: OutlineButton(
-                        btnText: "Back to Log in",
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  )
+                ],
+              ),
+            ],
           ),
-        ),
+        )
       ],
     );
   }
 }
 
-class InputwithIcon extends StatefulWidget {
+class InputWithIcon extends StatefulWidget {
+  final IconData icon;
+  final String hint;
+  InputWithIcon({this.icon, this.hint});
+
   @override
-  _InputwithIconState createState() => _InputwithIconState();
+  _InputWithIconState createState() => _InputWithIconState();
 }
 
-class _InputwithIconState extends State<InputwithIcon> {
+class _InputWithIconState extends State<InputWithIcon> {
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Color(0xFF26A69A),
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(50),
-      ),
+          border: Border.all(color: Color(0xFF00897B), width: 2),
+          borderRadius: BorderRadius.circular(50)),
       child: Row(
         children: <Widget>[
           Container(
-            width: 80,
-            child: Icon(
-              Icons.email,
-              size: 20,
-              color: Color(0xFFBB9B9B),
-            ),
-          ),
+              width: 60,
+              child: Icon(
+                widget.icon,
+                size: 20,
+                color: Color(0xFF00897B),
+              )),
           Expanded(
             child: TextField(
               decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: 20,
-                  ),
+                  contentPadding: EdgeInsets.symmetric(vertical: 20),
                   border: InputBorder.none,
-                  hintText: 'Enter Email'),
+                  hintText: widget.hint),
             ),
-          ),
+          )
         ],
       ),
     );
@@ -366,50 +359,38 @@ class _PrimaryButtonState extends State<PrimaryButton> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFF26A69A),
-        borderRadius: BorderRadius.circular(50),
-      ),
+          color: Color(0xFF00897B), borderRadius: BorderRadius.circular(50)),
       padding: EdgeInsets.all(20),
       child: Center(
         child: Text(
           widget.btnText,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 16),
         ),
       ),
     );
   }
 }
 
-class OutlineButton extends StatefulWidget {
+class OutlineBtn extends StatefulWidget {
   final String btnText;
-  OutlineButton({this.btnText});
+  OutlineBtn({this.btnText});
+
   @override
-  _OutlineButtonState createState() => _OutlineButtonState();
+  _OutlineBtnState createState() => _OutlineBtnState();
 }
 
-class _OutlineButtonState extends State<OutlineButton> {
+class _OutlineBtnState extends State<OutlineBtn> {
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Color(0xFF26A69A),
-          width: 2,
-        ),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(50),
-      ),
+          border: Border.all(color: Color(0xFF00897B), width: 2),
+          borderRadius: BorderRadius.circular(50)),
       padding: EdgeInsets.all(20),
       child: Center(
         child: Text(
           widget.btnText,
-          style: TextStyle(
-            color: Color(0xFF26A69A),
-            fontSize: 16,
-          ),
+          style: TextStyle(color: Color(0xFFB40284A), fontSize: 16),
         ),
       ),
     );
