@@ -38,11 +38,15 @@ class _LoginPageState extends State<LoginPage> {
   double windowHeight = 0;
   double _loginOpacity = 1;
   double _headingTop = 150;
+  double _loginHeight = 0;
+  double _registerHeight = 0;
 
   @override
   Widget build(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
+    _loginHeight = windowHeight - 270;
+    _registerHeight = windowHeight - 270;
 
     switch (_pageState) {
       case 0:
@@ -78,23 +82,23 @@ class _LoginPageState extends State<LoginPage> {
     }
     return Stack(
       children: <Widget>[
-        AnimatedContainer(
-          curve: Curves.fastLinearToSlowEaseIn,
-          duration: Duration(
-            milliseconds: 800,
-          ),
-          color: _backgroundColor,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _pageState = 0;
-                    });
-                  },
-                  child: Container(
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _pageState = 0;
+            });
+          },
+          child: AnimatedContainer(
+            curve: Curves.fastLinearToSlowEaseIn,
+            duration: Duration(
+              milliseconds: 800,
+            ),
+            color: _backgroundColor,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
                     child: Column(
                       children: <Widget>[
                         AnimatedContainer(
@@ -106,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                             top: _headingTop,
                           ),
                           child: Text(
-                            'Hackthon pa nga wla title',
+                            'Traack app daw',
                             style: TextStyle(
                               color: _headingColor,
                               fontSize: 28.00,
@@ -117,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 15.00,
                         ),
                         Text(
-                          'we make live easier thru innovation',
+                          'we make life easier thru the innovation technology',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: _headingColor,
@@ -127,105 +131,111 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 05.00,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 05.00,
+                    ),
+                    child: Center(
+                      child: Image.asset('images/people-mask.png'),
+                    ),
                   ),
-                  child: Center(
-                    child: Image.asset('images/people-mask.png'),
-                  ),
-                ),
-                Container(
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (_pageState != 0) {
-                            _pageState = 0;
-                          } else {
-                            _pageState = 1;
-                          }
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(50),
-                        padding: EdgeInsets.all(17.00),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: _headingColor,
-                            borderRadius: BorderRadius.circular(30.00)),
-                        child: Center(
-                          child: Text(
-                            'Get Started',
-                            style: TextStyle(
-                              color: Color(0xFFB2EBF2),
-                              fontSize: 20.00,
+                  Container(
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (_pageState != 0) {
+                              _pageState = 0;
+                            } else {
+                              _pageState = 1;
+                            }
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(50),
+                          padding: EdgeInsets.all(17.00),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: _headingColor,
+                              borderRadius: BorderRadius.circular(30.00)),
+                          child: Center(
+                            child: Text(
+                              'Get Started',
+                              style: TextStyle(
+                                color: Color(0xFFB2EBF2),
+                                fontSize: 20.00,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              _pageState = 2;
-            });
-          },
-          child: AnimatedContainer(
-            padding: EdgeInsets.all(32),
-            width: _loginWidth,
-            curve: Curves.fastLinearToSlowEaseIn,
-            duration: Duration(
-              milliseconds: 800,
+        AnimatedContainer(
+          padding: EdgeInsets.all(32),
+          width: _loginWidth,
+          height: _loginHeight,
+          curve: Curves.fastLinearToSlowEaseIn,
+          duration: Duration(
+            milliseconds: 800,
+          ),
+          transform: Matrix4.translationValues(_loginXOffset, _loginYOffset, 1),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(_loginOpacity),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
             ),
-            transform:
-                Matrix4.translationValues(_loginXOffset, _loginYOffset, 1),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(_loginOpacity),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(25),
-                topRight: Radius.circular(25),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: 20,
+                    ),
+                    child: Text(
+                      'Login To Continue',
+                      style: TextStyle(
+                        fontSize: 20.00,
+                      ),
+                    ),
+                  ),
+                  InputwithIcon(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  InputwithIcon(),
+                ],
               ),
-            ),
-            child: Column(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(
-                        bottom: 20,
-                      ),
-                      child: Text(
-                        'Login To Continue',
-                        style: TextStyle(
-                          fontSize: 20.00,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    PrimaryButton(
-                      btnText: "Log in",
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    OutlineButton(
+              Column(
+                children: <Widget>[
+                  PrimaryButton(
+                    btnText: "Log in",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _pageState = 2;
+                      });
+                    },
+                    child: OutlineButton(
                       btnText: "Create New Account",
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
         GestureDetector(
@@ -235,6 +245,7 @@ class _LoginPageState extends State<LoginPage> {
             });
           },
           child: AnimatedContainer(
+            height: _registerHeight,
             padding: EdgeInsets.all(32),
             curve: Curves.fastLinearToSlowEaseIn,
             duration: Duration(
@@ -249,6 +260,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(
                   children: <Widget>[
@@ -263,6 +275,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
+                    InputwithIcon(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    InputwithIcon(),
                   ],
                 ),
                 Column(
@@ -273,8 +290,15 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 20,
                     ),
-                    OutlineButton(
-                      btnText: "Back to Log in",
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _pageState = 1;
+                        });
+                      },
+                      child: OutlineButton(
+                        btnText: "Back to Log in",
+                      ),
                     ),
                   ],
                 ),
@@ -296,14 +320,31 @@ class _InputwithIconState extends State<InputwithIcon> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Color(0xFF26A69A),
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(50),
+      ),
       child: Row(
         children: <Widget>[
-          Icon(Icons.email),
           Container(
+            width: 80,
+            child: Icon(
+              Icons.email,
+              size: 20,
+              color: Color(0xFFBB9B9B),
+            ),
+          ),
+          Expanded(
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Enter Email',
-              ),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 20,
+                  ),
+                  border: InputBorder.none,
+                  hintText: 'Enter Email'),
             ),
           ),
         ],
