@@ -27,5 +27,12 @@ flutter:
     - family: Nunito
       fonts:
         - asset: fonts/Nunito-Bold.ttf
+    - family: Circular
+      fonts:
+        - asset: fonts/CircularStd-Medium.ttf
+        - asset: fonts/CircularAir-Light.ttf
+          weight: 100
+        - asset: fonts/CircularStd-Bold.ttf
+          weight: 500
 
 
